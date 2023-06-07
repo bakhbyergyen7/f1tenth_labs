@@ -1,10 +1,5 @@
-cmake_minimum_required(VERSION 3.5)
-project(lab2_safety)
-
-# Default to C99
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
-endif()
+cmake_minimum_required(VERSION 3.8)
+project(safety_node)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -15,19 +10,43 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
-find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+# Find dependencies
+foreach(PACKAGE 
+  ament_cmake 
+  ament_cmake_python
+  rclcpp
+  rclpy 
+  nav_msgs
+  ackermann_msgs
+  sensor_msgs
+  std_msgs)
 
-add_executable(safety_node src/safety_node.cpp)
-target_include_directories(safety_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  find_package(${PACKAGE} REQUIRED)
 
-install(TARGETS safety_node
+endforeach()
+
+# Include Cpp "include" directory
+include_directories(include)
+
+# Create Cpp executable
+add_executable(lab2_safety src/lab2_safety_node.cpp)
+ament_target_dependencies(lab2_safety 
+  rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs
+)
+
+# Install Cpp executables
+install(TARGETS
+  lab2_safety
   DESTINATION lib/${PROJECT_NAME})
+
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+
+# Install Python executables
+install(PROGRAMS
+  scripts/lab2_safety.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -39,5 +58,7 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+
 
 ament_package()
