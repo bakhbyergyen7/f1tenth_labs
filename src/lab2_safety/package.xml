@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>Lab2: Automatic Emergency Braking</description>
   <maintainer email="bakhbyergyen7@gmail.com">Bakhbyergyen Yerjan</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>

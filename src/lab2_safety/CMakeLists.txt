@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(safety_node)
+project(lab2_safety)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -29,7 +29,7 @@ endforeach()
 include_directories(include)
 
 # Create Cpp executable
-add_executable(lab2_safety src/lab2_safety_node.cpp)
+add_executable(lab2_safety src/safety_node.cpp)
 ament_target_dependencies(lab2_safety 
   rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs
 )

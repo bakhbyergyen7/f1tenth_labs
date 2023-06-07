@@ -9,7 +9,7 @@ from nav_msgs.msg import Odometry
 from ackermann_msgs.msg import AckermannDriveStamped, AckermannDrive
 
 
-from safetynode import SafetyNode
+from lab2_safety.safetynode import SafetyNode
 
 
 def main(args=None):
