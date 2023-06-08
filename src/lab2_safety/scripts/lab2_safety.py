@@ -9,8 +9,37 @@ from nav_msgs.msg import Odometry
 from ackermann_msgs.msg import AckermannDriveStamped, AckermannDrive
 
 
-from lab2_safety.safetynode import SafetyNode
+class SafetyNode(Node):
+    """
+    The class that handles emergency braking.
+    """
+    def __init__(self):
+        super().__init__('safety_node')
+        """
+        One publisher should publish to the /drive topic with a AckermannDriveStamped drive message.
 
+        You should also subscribe to the /scan topic to get the LaserScan messages and
+        the /ego_racecar/odom topic to get the current speed of the vehicle.
+
+        The subscribers should use the provided odom_callback and scan_callback as callback methods
+
+        NOTE that the x component of the linear velocity in odom is the speed
+        """
+        self.publisher = self.create_publisher(AckermannDriveStamped, '/drive', 10)
+        self.subscriber_lidar = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
+        self.subscriber_odom = self.create_subscription(Odometry, '/ego_racecar/odom', self.odom_callback, 10)
+        self.speed = 0.
+        self.get_logger().info('Safety Node initialized')
+ 
+    def odom_callback(self, odom_msg):
+        # TODO: update current speed
+        self.speed = odom_msg.twist.twist.linear.x
+
+    def scan_callback(self, scan_msg):
+        # TODO: calculate TTC
+        ranges = np.array(scan_msg.ranges)
+        # TODO: publish command to brake
+        pass
 
 def main(args=None):
     rclpy.init(args=args)
