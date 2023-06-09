@@ -29,15 +29,15 @@ endforeach()
 include_directories(include)
 
 # Create Cpp executable
-add_executable(lab2_safety src/safety_node.cpp)
-ament_target_dependencies(lab2_safety 
-  rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs
-)
+#add_executable(lab2_safety src/safety_node.cpp)
+#ament_target_dependencies(lab2_safety 
+# rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs
+#)
 
 # Install Cpp executables
-install(TARGETS
-  lab2_safety
-  DESTINATION lib/${PROJECT_NAME})
+#install(TARGETS
+#  lab2_safety
+#  DESTINATION lib/${PROJECT_NAME})
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})

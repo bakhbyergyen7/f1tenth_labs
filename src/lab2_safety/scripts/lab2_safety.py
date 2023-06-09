@@ -30,7 +30,7 @@ class SafetyNode(Node):
         self.subscriber_lidar = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
         self.subscriber_odom = self.create_subscription(Odometry, '/ego_racecar/odom', self.odom_callback, 10)
         
-        self.THRESHOLD = 0.4
+        self.THRESHOLD = 0.3
         self.ranges = []
         self.angles = []
         self.angles_cos = []
@@ -38,8 +38,6 @@ class SafetyNode(Node):
         self.angle_max = 0
         self.angle_increment = 0
         self.speed = 0.
-
-        self.initialized = False
         
         self.get_logger().info('Safety Node initialized')
  
@@ -60,18 +58,25 @@ class SafetyNode(Node):
             self.angles_cos = np.cos(self.angles)
             self.initialized = True
         self.calculate_TTC()
+
         # TTC Calculation
     def calculate_TTC(self):
         if self.speed < 0.1 and self.speed > -0.1:
             return
-        V_x = self.angles_cos * self.speed
-        TTCs = np.divide(self.ranges, V_x)
+        V = self.angles_cos * self.speed
+        TTCs = np.divide(self.ranges, V)
         lower_than_threshold = False
         for TTC in TTCs:
             if TTC > 0 and TTC < self.THRESHOLD:
                 lower_than_threshold = True
                 break
         if lower_than_threshold:
+            pub_brake = self.create_publisher(AckermannDriveStamped, '/brake', 10)
+            drive = AckermannDrive(speed = 0)
+            msg_brake = AckermannDriveStamped()
+            msg_brake.drive = drive
+            pub_brake.publish(msg_brake)
+            self.speed = 0
 
 def main(args=None):
     rclpy.init(args=args)

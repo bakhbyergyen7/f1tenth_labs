@@ -13,14 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Hongrui Zheng, zzangupenn',
-    maintainer_email='billyzheng.bz@gmail.com, zzang@seas.upenn.edu',
-    description='Skeleton code for Lab 1: Automatic Emergency Braking at University of Pennsylvania',
+    maintainer='Bakhbyergyen Yerjan',
+    maintainer_email='bakhbyergyen7@gmail.com',
+    description='Lab 2: Automatic Emergency Braking',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'safety_node = safety_node.safety_node:main',
+            'lab2_safety = scripts.lab2_safety:main',
         ],
     },
-)
+    )
